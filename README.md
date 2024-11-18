@@ -20,6 +20,24 @@ cat [result files] | jq  '.[]' | jq -s > merged_results_file.json
 
 ## Benchmarks for specific JDK versions
 The maven build process determines which benchmarks are going to land in the resulting jar.
-The profiles "jdk[version]_profile" are used to exclude classes that should no tbe run.
+The profiles "jdk[version]_profile" are used to exclude classes that should not be run.
 The java-based benchmark runner will find all benchmarks available in the classpath, so no configuration is needed at runtime.
 At this point profiles for versions 11, 17 and 21 are present.
+
+## Building docker images
+There is a simple script that allows building docker images that contain the benchmarking code. Run:
+```shell
+./docker-build [image name] [jdk version] [jdk image] [jre image] [username uesd for the build process]
+```
+to build the image locally. The script will ask for missing arguments.
+
+It has been tested on Temurin and Chainguard images only and is intended to be a guideline on how to make benchmark images,
+rather that a solution that may be used on production
+
+## Running docker image
+Running image via:
+```shell
+docker run [image]
+```
+
+is equivalent to running a benchmarks.jar artifact. Run without args to see available options
