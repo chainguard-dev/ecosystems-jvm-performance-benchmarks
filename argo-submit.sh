@@ -8,14 +8,6 @@ PARALLELISM=${1:-30}
 BENCHMARK_RUN_PROFILE=${2:-STANDARD}
 LIMIT=${3:-}
 
-echo "Create Github Secret"
-kubectl delete secret github-token \
-  --namespace workflows \
-  --ignore-not-found
-kubectl create secret generic github-token \
-  --namespace workflows \
-  --from-literal=GITHUB_TOKEN=$(gh auth token)
-
 echo "Update benchmark templates"
 argo template update ${SCRIPT_PATH}/argocd/benchmarks-workflow-tpls.yaml -n workflows ||
   argo template create ${SCRIPT_PATH}/ argocd/benchmarks-workflow-tpls.yaml -n workflows
